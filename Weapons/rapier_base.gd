@@ -7,6 +7,10 @@ onready var animation_player = $AnimationPlayer
 onready var holder = get_parent()
 
 
+func _ready():
+	$Sprite/Hitbox.add_to_group("player_weapon")
+
+
 func _input(event):
 	if event.is_action_pressed("primary_attack") and !animation_player.is_playing():
 		holder.velocity += dash_strength * global_position.direction_to(get_global_mouse_position())
