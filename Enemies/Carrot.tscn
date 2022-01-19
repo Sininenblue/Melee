@@ -1,10 +1,32 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Enemies/carrot.gd" type="Script" id=1]
 
 [sub_resource type="CircleShape2D" id=1]
 
+[sub_resource type="Animation" id=4]
+resource_name = "charge_up"
+length = 0.4
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "charge"
+} ]
+}
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 35.9026
+
 [sub_resource type="CircleShape2D" id=2]
+radius = 200.0
 
 [sub_resource type="CircleShape2D" id=3]
 
@@ -16,7 +38,17 @@ shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 
+[node name="ChargeTImer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/charge_up = SubResource( 4 )
+
+[node name="RangeBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RangeBox"]
+shape = SubResource( 5 )
 
 [node name="DetectionBox" type="Area2D" parent="."]
 
@@ -28,4 +60,12 @@ shape = SubResource( 2 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
 shape = SubResource( 3 )
 
+[node name="HitBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource( 5 )
+
+[connection signal="timeout" from="ChargeTImer" to="." method="_on_ChargeTImer_timeout"]
+[connection signal="area_entered" from="RangeBox" to="." method="_on_RangeBox_area_entered"]
+[connection signal="body_entered" from="DetectionBox" to="." method="_on_DetectionBox_body_entered"]
 [connection signal="area_entered" from="HurtBox" to="." method="_on_HurtBox_area_entered"]

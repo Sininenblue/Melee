@@ -7,7 +7,7 @@ var input : Vector2
 var velocity : Vector2
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	# movement
 	input = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	velocity = velocity.move_toward(input * speed, acceleration)
